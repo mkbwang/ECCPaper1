@@ -9,3 +9,13 @@
 *.log
 *.csv
 SRR*
+*.sra
+*.Rdata
+*.xlsx
+*.csv
+*/qc_summary/
+*/filtered/
+*/final/
+*/raw_data/
+*/SRRprefetch/
+

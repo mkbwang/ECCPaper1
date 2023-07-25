@@ -17,5 +17,5 @@ module load gcc
 module load sratoolkit
 
 sed 1d runinfo_WGS.csv | cut -d "," -f 1 > SRR.numbers.wgs
-cat SRR.numbers.wgs | parallel prefetch 
-cat SRR.numbers.wgs | parallel fastq-dump --gzip --readids --read-filter pass --split-files --dumpbase --skip-technical -O ${folder}/WGS/raw_data
+# cat SRR.numbers.wgs | parallel prefetch 
+cat SRR.numbers.wgs | parallel fastq-dump --gzip --readids --split-files --dumpbase --skip-technical -O ${folder}/WGS/raw_data

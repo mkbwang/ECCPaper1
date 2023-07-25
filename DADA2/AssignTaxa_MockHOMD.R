@@ -1,6 +1,6 @@
 library(dada2); packageVersion("dada2")
 # load seqtab
-seqtab <- readRDS("/scratch/bfoxman_root/bfoxman/blostein/CAVITIES/Files/seqtab_final_homd.rds")
+seqtab <- readRDS("/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/Amplicon16S/filtered/seqtab_final_homd.rds")
 # Assign taxonomy to genus, then to species
 taxa <- assignTaxonomy(seqtab, "/scratch/bfoxman_root/bfoxman/blostein/CAVITIES/Files/ref_tax/HOMD_assigntaxa_togenus_plusmocks.fasta.gz", multithread=TRUE)
 taxa <- addSpecies(taxa, "/scratch/bfoxman_root/bfoxman/blostein/CAVITIES/Files/ref_tax/HOMD_AssignSpecies_plusmocks.fasta.gz")

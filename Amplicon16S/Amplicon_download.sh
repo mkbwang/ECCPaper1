@@ -17,5 +17,5 @@ module load gcc
 module load sratoolkit
 
 sed 1d runinfo_Amplicon16S.csv | cut -d "," -f 1 > SRR.numbers.amplicon
-cat SRR.numbers.amplicon | parallel prefetch --type fastq
-cat SRR.numbers.amplicon | parallel fastq-dump --gzip --readids --read-filter pass --split-files --dumpbase --skip-technical -O ${folder}/Amplicon16S/raw_data
+cat SRR.numbers.amplicon | parallel prefetch
+cat SRR.numbers.amplicon | parallel fastq-dump --gzip --readids --split-files --dumpbase --skip-technical -O ${folder}/Amplicon16S/raw_data
