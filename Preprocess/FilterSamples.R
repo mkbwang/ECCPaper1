@@ -26,7 +26,7 @@ morethan1000reads<-subset_samples(ps, sample_sums(ps)>=readlimit)
 #with(lessthan1000reads@sam_data, xtabs(~SampleType+AmplificationStatus))
 #with(morethan1000reads@sam_data, xtabs(~SampleType+AmplificationStatus))
 #passed but shouldn't have 
-EmptyPass<-subset_taxa(subset_samples(ps, sample_sums(ps)>=readlimit & SampleType=="Empty"), taxa_sums(subset_samples(ps, sample_sums(ps)>=1000 & SampleType=="Empty"))>500)
+#EmptyPass<-subset_taxa(subset_samples(ps, sample_sums(ps)>=readlimit & SampleType=="Empty"), taxa_sums(subset_samples(ps, sample_sums(ps)>=1000 & SampleType=="Empty"))>500)
 #plot_bar(EmptyPass, fill="Genus");plot_bar(Extractionkit, fill='Genus')
 
 #final filter
@@ -43,6 +43,8 @@ save(ps_truesamples, file=file.path(data.out, 'phyloseq', "phyasv_truesamples.Rd
 ps@sam_data$ReadLimit=ifelse(sample_sums(ps)>=readlimit, 'pass', 'fail')
 sampleTypeVsReadLimit=ps@sam_data %>% group_by(SampleType, ReadLimit) %>% dplyr::summarise(n=n())
 
+
+##----Mukai didn't run the rest of the lines---###
 #plot positive controls
 mock_true<-read.csv(file.path(meta.data, "ZymoMockD6305.csv"))
 mock_true$SciName=paste(mock_true$Genus, mock_true$Species)

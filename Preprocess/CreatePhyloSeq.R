@@ -19,5 +19,7 @@ taxa_names(phy.asv) <- paste0("ASV", seq(ntaxa(phy.asv)))
 if(amp_data==T){phy.asv@sam_data$Run=paste0('Run ', phy.asv@sam_data$Batch)}
 
 #save output
-dir.create(file.path(data.out, 'phyloseq'))
+if(!dir.exists(file.path(data.out, 'phyloseq'))){
+  dir.create(file.path(data.out, 'phyloseq'))
+}
 save(phy.asv, file=file.path(data.out, 'phyloseq', "phyasv.Rdata"))

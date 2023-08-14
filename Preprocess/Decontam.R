@@ -46,7 +46,10 @@ phy.asv_decontam<-notcontaminants
 save(phy.asv_decontam, file=file.path(data.out, 'phyloseq', "phyasv_decontam.Rdata"))
 
 #Save information from this run 
-dir.create(file.path(output.out, 'Preprocess'))
+if(!dir.exists(file.path(output.out, 'Preprocess'))){
+  dir.create(file.path(output.out, 'Preprocess'))  
+}
+
 save(list=c('contaminants', 'notcontaminants', 'libsize_g', 'prev_g'), file=file.path(output.out, 'Preprocess', paste0('decontam_', decontam.method, '_', paste0(decontam.thresh, collapse = '&'), '.Rdata')), compress=T)
 
 #Print information 
