@@ -37,12 +37,17 @@ echo ${OUTDIR}
 #mkdir -p "${OUTDIR}"/
 
 # Pulling FASTQ[12] file names minus the extensions for labelling Trimmomatic output
-BASENAME=$(echo "${FASTQ1}" | sed 's/.*\/\(.*\)_R._001\.fastq\.gz/\1/')
-#BASENAME=$(echo "${FASTQ1}" | sed 's/\(.*\)-.*/\1/')
-FILENAME1=$(echo "${FASTQ1}" | sed 's/.*\/\(.*\)_001\.fastq\.gz/\1/')
+#BASENAME=$(echo "${FASTQ1}" | sed 's/.*\/\(.*\)_R._001\.fastq\.gz/\1/')
+BASENAME=$(echo "${FASTQ1}" | sed 's/\(.*\)_.*/\1/')
+BASENAME=${BASENAME##*/}
+#FILENAME1=$(echo "${FASTQ1}" | sed 's/.*\/\(.*\)_001\.fastq\.gz/\1/')
 #FILENAME1=$(echo "${FASTQ1}" | sed 's/\(.*\)\..*/\1/')
-FILENAME2=$(echo "${FASTQ2}" | sed 's/.*\/\(.*\)_001\.fastq\.gz/\1/')
+FILENAME1=$(echo "$FASTQ1" | cut -f 1 -d '.')
+FILENAME1=${FILENAME1##*/}
+#FILENAME2=$(echo "${FASTQ2}" | sed 's/.*\/\(.*\)_001\.fastq\.gz/\1/')
 #FILENAME2=$(echo "${FASTQ2}" | sed 's/\(.*\)\..*/\1/')
+FILENAME2=$(echo "$FASTQ2" | cut -f 1 -d '.')
+FILENAME2=${FILENAME2##*/}
 
 # Running Trimmomatic
 TrimmomaticPE \
@@ -62,7 +67,7 @@ zcat -f "${OUTDIR}"/"${FILENAME2}"_unpaired.fastq.gz >> "${OUTDIR}"/"${BASENAME}
 #fastqc
 mkdir -p "${OUTDIR}"/FASTQC
 
-fastqc "${OUTDIR}"/"${FILENAME1}"_paired.fastq --outdir="${OUTDIR}"/FASTQC
-fastqc "${OUTDIR}"/"${FILENAME2}"_paired.fastq --outdir="${OUTDIR}"/FASTQC
+fastqc "${OUTDIR}"/"${FILENAME1}"_paired.fastq.gz --outdir="${OUTDIR}"/FASTQC
+fastqc "${OUTDIR}"/"${FILENAME2}"_paired.fastq.gz --outdir="${OUTDIR}"/FASTQC
 fastqc "${OUTDIR}"/"${BASENAME}"_unpaired.fastq.gz --outdir="${OUTDIR}"/FASTQC
 

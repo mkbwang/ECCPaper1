@@ -20,12 +20,17 @@ HOSTINDEX=${4:?ERROR: Need to define HOSTINDEX.} # Supply only one of the index 
 
 # Other variables
 THREADS=$(nproc) # Automatically determines the number of cores based on local resources
-#echo "${THREADS}"
+echo "${THREADS}"
 #OUTDIR=bowtie2
 OUTDIR=${5:?ERROR: Please provide output directory.} #output directory
 
-
-
+##############
+#troubleshoot#
+##############
+echo $FASTQTRIMMEDPAIRED1
+echo $FASTQTRIMMEDPAIRED2
+zcat $FASTQTRIMMEDPAIRED1 | echo $((`wc -l`/4))
+zcat $FASTQTRIMMEDPAIRED2 | echo $((`wc -l`/4))
 
 ###############################################################
 # Using Bowtie2 to Remove Reads Mapping to Known Contaminants #

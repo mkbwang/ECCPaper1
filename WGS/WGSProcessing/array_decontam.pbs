@@ -3,15 +3,17 @@
 
 #“#SBATCH” directives that convey submission options:
 
-#SBATCH --job-name=array_decontam
-#SBATCH --mail-type=END
+#SBATCH --job-name=array_decontam_ECCPaper1
+#SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=8
-#SBATCH --mem-per-cpu=4g
-#SBATCH --time=4:00:00
-#SBATCH --account=bfoxman1
+#SBATCH --mem-per-cpu=10g
+#SBATCH --time=12:00:00
+#SBATCH --account=bfoxman0
 #SBATCH --partition=standard
-#SBATCH --output=/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Code/CleanPipe/%x-%j.log
+#SBATCH --output=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/WGSProcessing/decontam_log/%x-%j.log
+#SBATCH --error=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/WGSProcessing/decontam_log/%x-%j-error.log
+
 
 echo "All jobs in this array have:"
 echo "- SLURM_ARRAY_JOB_ID=${SLURM_ARRAY_JOB_ID}"
@@ -27,26 +29,25 @@ echo "- SLURM_ARRAY_TASK_ID=${SLURM_ARRAY_TASK_ID}"
 #module load
 module load Bioinformatics
 module load trimmomatic
-module load fastqc/0.11.8
+module load fastqc
 module load bowtie2
 module load samtools
 module load bedtools2
 
 #set host chromosome file
-host=/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/TestCodes/Files/host/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index
+host=/nfs/turbo/sph-bfoxman/reference_data/host/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index
 
 #set input and output directory
-in=/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Files/CleanPipe/PostTrim/ 
-out=/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Files/CleanPipe/PostHR/
+in=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/post_trim/ 
+out=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/post_HR/
 
 #Files for input
-FILES1=($(ls -1 ${in}*R1*.fastq.gz))
-FILES2=($(ls -1 ${in}*R2*.fastq.gz))
-FILES3=($(ls -1 ${in}*unpaired*.fastq.gz))
+FILES1=($(ls -1 ${in}*_1_paired.fastq.gz))
+FILES2=($(ls -1 ${in}*_2_paired.fastq.gz))
+FILES3=($(ls -1 ${in}*_unpaired.fastq.gz))
 FILENAME1=${FILES1[$SLURM_ARRAY_TASK_ID]}
 FILENAME2=${FILES2[$SLURM_ARRAY_TASK_ID]}
 FILENAME3=${FILES3[$SLURM_ARRAY_TASK_ID]}
 
 echo "processing FILES=${FILENAME1}"
-
-/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Code/CleanPipe/metagenomeDecontaminateReads.sh ${FILENAME1} ${FILENAME2} ${FILENAME3} ${host} ${out}
+/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/WGSProcessing/metagenomeDecontaminateReads.sh ${FILENAME1} ${FILENAME2} ${FILENAME3} ${host} ${out}

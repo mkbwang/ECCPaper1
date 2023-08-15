@@ -3,23 +3,24 @@
 
 #“#SBATCH” directives that convey submission options:
 
-#SBATCH --job-name=multiQC
-#SBATCH --mail-type=BEGIN,END
+#SBATCH --job-name=multiQC_ECCPaper1
+#SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --mem-per-cpu=2g
+#SBATCH --mem-per-cpu=4g
 #SBATCH --time=8:00:00
-#SBATCH --account=bfoxman1
+#SBATCH --account=bfoxman0
 #SBATCH --partition=standard
-#SBATCH --output=/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Code/CleanPipe/%x-%j.log
+#SBATCH --output=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/multiQCresults/%x-%j.log
+#SBATCH --error=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/multiQCresults/%x-%j-error.log
 
-
-trim_dir=/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Files/CleanPipe/PostTrim/FASTQC/
-decontam_dir=/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Files/CleanPipe/PostHR/FASTQC/
-out_dir=/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Results/multiQCresults
+trim_dir=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/post_trim/FASTQC/
+decontam_dir=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/post_HR/FASTQC/
+out_dir=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/multiQCresults/
 
 module load Bioinformatics
-source activate multiqc
+source /home/wangmk/.bashrc
+micromamba activate multiqc
 
 multiqc -f ${trim_dir}*_paired_fastqc* -n pairedPosttrim -o ${out_dir}
 multiqc -f ${trim_dir}*unpaired_fastqc* -n unpairedPosttrim -o ${out_dir}

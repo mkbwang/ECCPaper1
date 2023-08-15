@@ -3,15 +3,16 @@
 
 #“#SBATCH” directives that convey submission options:
 
-#SBATCH --job-name=array_trim
-#SBATCH --mail-type=END
+#SBATCH --job-name=array_trim_ECCPaper1
+#SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=5g
 #SBATCH --time=2:00:00
-#SBATCH --account=bfoxman1
+#SBATCH --account=bfoxman0
 #SBATCH --partition=standard
-#SBATCH --output=/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Code/CleanPipe/%x-%j.log
+#SBATCH --output=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/WGSProcessing/trim_log/%x-%j.log
+#SBATCH --error=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/WGSProcessing/trim_log/%x-%j-error.log
 
 echo "All jobs in this array have:"
 echo "- SLURM_ARRAY_JOB_ID=${SLURM_ARRAY_JOB_ID}"
@@ -26,22 +27,22 @@ echo "- SLURM_ARRAY_TASK_ID=${SLURM_ARRAY_TASK_ID}"
 #module load
 module load Bioinformatics
 module load trimmomatic
-module load fastqc/0.11.8
+module load fastqc
 module load bowtie2
 module load samtools
 module load bedtools2
 
 #set nextera file
-nextera=/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Files/adapters/NexteraPE-PE.fa
+nextera=/nfs/turbo/sph-bfoxman/reference_data/adapters/NexteraPE-PE.fa
 
 #set input and output directory
-in=/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Files/OGFiles/ 
-out=/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Files/CleanPipe/PostTrim
+in=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/raw_data/ 
+out=/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/post_trim/
 
 #Files for input
-FILES1=($(ls -1 ${in}*R1*.fastq.gz))
-FILES2=($(ls -1 ${in}*R2*.fastq.gz))
+FILES1=($(ls -1 ${in}*_1.fastq.gz))
+FILES2=($(ls -1 ${in}*_2.fastq.gz))
 FILENAME1=${FILES1[$SLURM_ARRAY_TASK_ID]}
 FILENAME2=${FILES2[$SLURM_ARRAY_TASK_ID]}
 
-/scratch/bfoxman_root/bfoxman/blostein/meta_CAVITIES/Code/CleanPipe/metagenomeTrimmomatic.sh ${FILENAME1} ${FILENAME2} 0 ${nextera} ${out}
+/nfs/turbo/sph-bfoxman/People/wangmk/ECCPaper1/WGS/WGSProcessing/metagenomeTrimmomatic.sh ${FILENAME1} ${FILENAME2} 0 ${nextera} ${out}
